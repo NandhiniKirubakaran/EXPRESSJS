@@ -1,5 +1,6 @@
 import express from "express";
-import { client } from "../index.js";
+import { getMoviesbyid, postMovies, deleteMovies, updateMovies, getMovies } from "../services/movies.service.js";
+import { auth } from "../middleware/auth.js";
 
 const router = express.Router();
 
@@ -22,9 +23,9 @@ const router = express.Router();
 
 
 // Get data from Mongodb 
-router.get("/:id",  async function (request, response) {    
+router.get("/:id", async function (request, response) {    
 const {id} = request.params;
-const movie = await client.db("test").collection("movies").findOne({ id: id});
+const movie = await getMoviesbyid(id);
 console.log(movie);
 movie ? response.send(movie) : response.status(404).send({message : "movie not found"}); 
 });
@@ -34,7 +35,7 @@ movie ? response.send(movie) : response.status(404).send({message : "movie not f
 router.post("/",  async function (request, response) {   
 const data = request.body;
 console.log(data);
-const result = await client.db("test").collection("movies").insertMany(data);
+const result = await postMovies(data);
 response.send(result);
 });
     
@@ -52,7 +53,7 @@ response.send(result);
 //Delete
 router.delete("/:id",  async function (request, response) {    
 const {id} = request.params;
-const result = await client.db("test").collection("movies").deleteOne({ id: id});
+const result = await deleteMovies(id);
 console.log(result);
 result.deletedCount > 0 ? response.send({message : "movie deleted successfully"}) : response.status(404).send({message : "movie not found"}); 
 });
@@ -63,7 +64,7 @@ router.put("/:id",  async function (request, response) {
 //  db.movies.updateOne({ id : '99'}, {$set : {rating : 9}})  
 const {id} = request.params;
 const data = request.body;
-const result = await client.db("test").collection("movies").updateOne({ id: id}, {$set : data});
+const result = await updateMovies(id, data);
 console.log(result); 
 response.send(result);
 });
@@ -76,8 +77,10 @@ if (request.query.rating) {
 request.query.rating = +request.query.rating;
 }
 console.log(request.query);
-const movies = await client.db("test").collection("movies").find(request.query).toArray();
+const movies = await getMovies(request);
 response.send(movies);
  });
 
  export default router;
+
+

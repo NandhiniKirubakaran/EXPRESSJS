@@ -4,6 +4,8 @@ import { MongoClient } from "mongodb";
 import * as dotenv from 'dotenv';
 dotenv.config();
 import moviesRouter from './routes/movies.route.js';
+import userRouter from './routes/user.route.js';
+import cors from 'cors';
 
 //env - Environment variables
 console.log(process.env.MONGO_URL);
@@ -25,7 +27,7 @@ console.log("Mongo is connected!!!");
 // middleware - express.json() - JSON -> JS object
 // app.use -> Intercepts -> applies express.json()
 app.use(express.json());
-
+app.use(cors());
 
 app.get("/", function (request, response) {
 response.send("🙋‍♂️, 🌏 🎊✨🤩");
@@ -33,7 +35,11 @@ response.send("🙋‍♂️, 🌏 🎊✨🤩");
 
 
 app.use('/movies', moviesRouter);
+app.use('/user', userRouter);
 
 app.listen(PORT, () => console.log(`The server started in: ${PORT} ✨✨`));
+
+
+
 
 export { client };
