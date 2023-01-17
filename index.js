@@ -7,6 +7,7 @@ import moviesRouter from './routes/movies.route.js';
 import userRouter from './routes/user.route.js';
 import cors from 'cors';
 import { auth } from "./middleware/auth.js";
+import { ObjectId } from "mongodb";
 
 //env - Environment variables
 console.log(process.env.MONGO_URL);
@@ -40,6 +41,7 @@ app.use('/user', userRouter);
 //--------------------------------------------------
 // http://localhost:5000/mobiles
 
+// /mobiles - GET
 app.get('/mobiles', auth, async (request, response) => {
 //get data from atlas
 //db.mobiles.find({});
@@ -56,8 +58,27 @@ app.post('/mobiles', async (request, response) => {
     response.send(result);
 });
 
+const ROLE_ID = {
+    ADMIN: "0",
+    NORMAL_USER: "1",
+};
 
+// /mobiles - DELETE
+app.delete("/mobiles/:id", auth, async function (request, response) {    
+    const {id} = request.params;
+    //db.mobiles.deleteOne({_id: 100})
+    const { roleId } = request;
 
+    if (roleId == ROLE_ID.ADMIN) {
+        const result = await client.db("b40wd").collection("mobiles").deleteOne({ _id: ObjectId(id) });
+        console.log(result);
+        result.deletedCount > 0 ? response.send({message : "mobile deleted successfully"}) : response.status(404).send({message : "mobile not found"}); 
+    } else {
+        response.status(401).send({ message: "Unauthorized" });
+    }
+    
+});
 app.listen(PORT, () => console.log(`The server started in: ${PORT} ✨✨`));
 
 export { client };
+ 

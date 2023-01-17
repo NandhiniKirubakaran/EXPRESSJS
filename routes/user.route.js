@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
+//---------------------------------------------------------------------
 // Signup API-POST - Create
 router.post("/signup",  async function (request, response) {   
     const { username, password } = request.body;
@@ -25,12 +26,11 @@ const result = await createUser({
     password: hashedPassword,
     roleId: 1,
 });
-
     response.send(result);
 }
 });
 
-
+//-----------------------------------------------------------------------
 // Login API-POST - Create
 router.post("/login",  async function (request, response) {   
     const { username, password } = request.body;
@@ -54,5 +54,6 @@ if(!userFromDB) {
     }
 }
 });
+
 
 export default router;
