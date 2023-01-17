@@ -22,7 +22,8 @@ if(userFromDB) {
 const hashedPassword = await generateHashedpassword(password);
 const result = await createUser({
     username: username, 
-    password: hashedPassword
+    password: hashedPassword,
+    roleId: 1,
 });
 
     response.send(result);
@@ -47,7 +48,7 @@ if(!userFromDB) {
 
     if(isPasswordCheck){
         const token = jwt.sign({ id: userFromDB._id}, process.env.SECRET_KEY);
-        response.send({ message: "Successfull login", token: token });
+        response.send({ message: "Successfull login", token: token, roleId: userFromDB.roleId, });
     } else {
         response.status(401).send({ message: "Invalid credentials"});
     }
