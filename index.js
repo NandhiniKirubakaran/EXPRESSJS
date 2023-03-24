@@ -8,6 +8,8 @@ import userRouter from './routes/user.route.js';
 import cors from 'cors';
 import { auth } from "./middleware/auth.js";
 import { ObjectId } from "mongodb";
+import nodemailer from "nodemailer";
+
 
 //env - Environment variables
 console.log(process.env.MONGO_URL);
@@ -75,10 +77,39 @@ app.delete("/mobiles/:id", auth, async function (request, response) {
         result.deletedCount > 0 ? response.send({message : "mobile deleted successfully"}) : response.status(404).send({message : "mobile not found"}); 
     } else {
         response.status(401).send({ message: "Unauthorized" });
-    }
-    
+    } 
 });
 app.listen(PORT, () => console.log(`The server started in: ${PORT} ✨✨`));
 
+
+
+
 export { client };
- 
+
+//Mail send
+
+// async..await is not allowed in global scope, must use a wrapper
+async function main() {
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    secure: false, // true for 465, false for other ports
+    auth: {
+        user: process.env.NODE_MAILER_USER,
+        pass: process.env.NODE_MAILER_PASSWORD,
+    },
+  });
+
+  // send mail with defined transport object
+  let info = await transporter.sendMail({
+    from: '"Nandhini Kirubakaran" <knaphasri@gmail.com>', // sender address
+    to: "knaphasri@gmail.com,kirubaanbarasu@gmai.com, baz@example.com", // list of receivers
+    subject: "Hello ✔", // Subject line
+    text: "Hello world?", // plain text body
+    html: "<b>Hello world?</b>", // html body
+  });
+
+  console.log("Message sent: %s", info.messageId);
+}
+
+main().catch(console.error);
