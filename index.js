@@ -33,9 +33,9 @@ console.log("Mongo is connected!!!");
 app.use(express.json());
 app.use(cors());
 
-app.get("/", function (request, response) {
-response.send("🙋‍♂️, 🌏 🎊✨🤩");
-});
+// app.get("/", function (request, response) {
+// response.send("🙋‍♂️, 🌏 🎊✨🤩");
+// });
 
 app.use('/movies', moviesRouter);
 app.use('/user', userRouter);
