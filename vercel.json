@@ -10,11 +10,5 @@
         "src": "/(.*)",
         "dest": "/index.js"
       }
-    ],
-    "services": [
-      {
-        "src": "/(.*)",
-        "dest": "/index.js"
-      }
     ]
  }
