@@ -89,27 +89,27 @@ export { client };
 //Mail send
 
 // async..await is not allowed in global scope, must use a wrapper
-async function main() {
-  let transporter = nodemailer.createTransport({
-    service: "gmail",
-    host: "smtp.gmail.com",
-    secure: false, // true for 465, false for other ports
-    auth: {
-        user: process.env.NODE_MAILER_USER,
-        pass: process.env.NODE_MAILER_PASSWORD,
-    },
-  });
+// async function main() {
+//   let transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     host: "smtp.gmail.com",
+//     secure: false, // true for 465, false for other ports
+//     auth: {
+//         user: process.env.NODE_MAILER_USER,
+//         pass: process.env.NODE_MAILER_PASSWORD,
+//     },
+//   });
 
-  // send mail with defined transport object
-  let info = await transporter.sendMail({
-    from: '"Nandhini Kirubakaran" <knaphasri@gmail.com>', // sender address
-    to: "baz@example.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello world?", // plain text body
-    html: "<b>Hello world?</b>", // html body
-  });
+//   // send mail with defined transport object
+//   let info = await transporter.sendMail({
+//     from: '"Nandhini Kirubakaran" <knaphasri@gmail.com>', // sender address
+//     to: "baz@example.com", // list of receivers
+//     subject: "Hello ✔", // Subject line
+//     text: "Hello world?", // plain text body
+//     html: "<b>Hello world?</b>", // html body
+//   });
 
-  console.log("Message sent: %s", info.messageId);
-}
+//   console.log("Message sent: %s", info.messageId);
+// }
 
-main().catch(console.error);
+// main().catch(console.error);
